@@ -1,0 +1,30 @@
+{
+	"name": "@gomdle/solid-gsi",
+	"description": "Google Sign-In for SolidJS",
+	"version": "0.0.1",
+	"author": {
+		"name": "Youngbae Jeon",
+		"email": "jeonyb@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Youngbae-Jeon/solid-gsi.git"
+	},
+	"main": "dist/bundle.js",
+	"types": "dist/types/index.d.ts",
+	"type": "module",
+	"scripts": {
+		"build": "rollup -c",
+		"watch": "rollup -cw"
+	},
+	"devDependencies": {
+		"rollup": "^4.13.2",
+		"rollup-preset-solid": "^2.0.1"
+	},
+	"peerDependencies": {
+		"solid-js": "^1.8.16"
+	},
+	"dependencies": {
+		"@types/google.accounts": "^0.0.14"
+	}
+}
