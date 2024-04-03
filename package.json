@@ -1,7 +1,13 @@
 {
 	"name": "@gomdle/solid-gsi",
-	"description": "Google Sign-In for SolidJS",
-	"version": "0.0.1",
+	"description": "Google Sign-In for SolidJs",
+	"version": "0.1.0",
+	"keyeywords": [
+		"google",
+		"signin",
+		"solidjs"
+	],
+	"license": "MIT",
 	"author": {
 		"name": "Youngbae Jeon",
 		"email": "jeonyb@gmail.com"
@@ -26,5 +32,8 @@
 	},
 	"dependencies": {
 		"@types/google.accounts": "^0.0.14"
-	}
+	},
+	"files": [
+		"dist"
+	]
 }

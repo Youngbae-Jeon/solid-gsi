@@ -8,12 +8,13 @@ type PromptMomentNotification = google.accounts.id.PromptMomentNotification;
 type GsiButtonConfiguration = google.accounts.id.GsiButtonConfiguration;
 
 export type GoogleSigninProps = {
+	type?: "standard" | "icon";
 	useOneTap?: boolean;
 	containerProps?: JSX.DOMAttributes<HTMLDivElement> & { style?: JSX.CSSProperties };
-	onMoment?: (promptMomentNotification: PromptMomentNotification) => void;
+	onPrompt?: (promptMomentNotification: PromptMomentNotification) => void;
 	onSuccess: (credentialResponse: CredentialResponse) => void;
 	onError?: () => void;
-} & Omit<IdConfiguration, "callback"> & GsiButtonConfiguration;
+} & Omit<IdConfiguration, "callback"> & Omit<GsiButtonConfiguration, "type">;
 
 export function GoogleSignin(props: GoogleSigninProps) {
 	const scriptLoaded = createGsiScriptLoad();
@@ -39,7 +40,7 @@ export function GoogleSignin(props: GoogleSigninProps) {
 		});
 
 		window?.google?.accounts?.id?.renderButton(divRef!, {
-			type: props.type,
+			type: props.type ?? "standard",
 			theme: props.theme,
 			size: props.size,
 			text: props.text,
@@ -51,7 +52,7 @@ export function GoogleSignin(props: GoogleSigninProps) {
 		});
 
 		if (props.useOneTap) {
-			window?.google?.accounts?.id?.prompt(props.onMoment);
+			window?.google?.accounts?.id?.prompt(props.onPrompt);
 		}
 	});
 

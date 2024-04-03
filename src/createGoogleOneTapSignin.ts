@@ -15,7 +15,7 @@ interface GoogleOneTapSigninOptions {
 	auto_select?: boolean;
 	onSuccess: (credentialResponse: CredentialResponse) => void;
 	onError?: () => void;
-	onMoment?: (promptMomentNotification: PromptMomentNotification) => void;
+	onPrompt?: (promptMomentNotification: PromptMomentNotification) => void;
 }
 
 export function createGoogleOneTapSignin(opts: GoogleOneTapSigninOptions): void {
@@ -28,7 +28,7 @@ export function createGoogleOneTapSignin(opts: GoogleOneTapSigninOptions): void 
 	createEffect(() => {
 		if (!scriptLoaded()) return;
 
-		const {client_id, onSuccess, onError, onMoment, ...otherOptions} = opts;
+		const {client_id, onSuccess, onError, onPrompt, ...otherOptions} = opts;
 
 		window?.google?.accounts?.id?.initialize({
 			client_id,
@@ -42,6 +42,6 @@ export function createGoogleOneTapSignin(opts: GoogleOneTapSigninOptions): void 
 			...otherOptions,
 		});
 
-		window?.google?.accounts?.id?.prompt(onMoment);
+		window?.google?.accounts?.id?.prompt(onPrompt);
 	});
 }
