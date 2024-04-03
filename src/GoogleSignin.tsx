@@ -1,25 +1,22 @@
 import { JSX } from "solid-js/jsx-runtime";
-import { useGoogleOAuth } from "./GoogleOAuthProvider";
 import { createEffect, onCleanup } from "solid-js";
+import { createGsiScriptLoad } from "./createGsiScriptLoad";
 
 type IdConfiguration = google.accounts.id.IdConfiguration;
 type CredentialResponse = google.accounts.id.CredentialResponse;
 type PromptMomentNotification = google.accounts.id.PromptMomentNotification;
 type GsiButtonConfiguration = google.accounts.id.GsiButtonConfiguration;
 
-const containerHeightMap = { large: 40, medium: 32, small: 20 };
-
-export type GoogleLoginProps = {
-	onSuccess: (credentialResponse: CredentialResponse) => void;
-	onError?: () => void;
-	promptMomentNotification?: (promptMomentNotification: PromptMomentNotification) => void;
+export type GoogleSigninProps = {
 	useOneTap?: boolean;
 	containerProps?: JSX.DOMAttributes<HTMLDivElement> & { style?: JSX.CSSProperties };
-} & Omit<IdConfiguration, "client_id" | "callback"> &
-	GsiButtonConfiguration;
+	onMoment?: (promptMomentNotification: PromptMomentNotification) => void;
+	onSuccess: (credentialResponse: CredentialResponse) => void;
+	onError?: () => void;
+} & Omit<IdConfiguration, "callback"> & GsiButtonConfiguration;
 
-export function GoogleLogin(props: GoogleLoginProps) {
-	const { clientId, scriptLoadedSuccessfully } = useGoogleOAuth();
+export function GoogleSignin(props: GoogleSigninProps) {
+	const scriptLoaded = createGsiScriptLoad();
 
 	onCleanup(() => {
 		if (props.useOneTap) window?.google?.accounts?.id?.cancel();
@@ -28,20 +25,15 @@ export function GoogleLogin(props: GoogleLoginProps) {
 	let divRef: HTMLDivElement | undefined;
 
 	createEffect(() => {
-		if (!scriptLoadedSuccessfully) return;
+		if (!scriptLoaded()) return;
 
 		window?.google?.accounts?.id?.initialize({
-			client_id: clientId,
 			callback: (credentialResponse: CredentialResponse) => {
 				if (!credentialResponse?.credential) {
 					return props.onError?.();
 				}
 
-				const { credential, select_by } = credentialResponse;
-				props.onSuccess({
-					credential,
-					select_by,
-				});
+				props.onSuccess(credentialResponse);
 			},
 			...props,
 		});
@@ -59,16 +51,11 @@ export function GoogleLogin(props: GoogleLoginProps) {
 		});
 
 		if (props.useOneTap) {
-			window?.google?.accounts?.id?.prompt(props.promptMomentNotification);
+			window?.google?.accounts?.id?.prompt(props.onMoment);
 		}
 	});
 
 	return (
-		<div ref={divRef} {...props.containerProps}
-			style={{
-				...props.containerProps?.style,
-				height: containerHeightMap[props.size || "large"] + "px"
-			}}
-		/>
+		<div ref={divRef} {...props.containerProps} />
 	);
 }

@@ -1,6 +1,6 @@
 import { Accessor, createEffect, createSignal } from "solid-js";
 
-export interface UseLoadGsiScriptOptions {
+export interface GsiScriptLoadOptions {
 	/**
 	 * Nonce applied to GSI script tag. Propagates to GSI's inline style tag
 	 */
@@ -15,8 +15,8 @@ export interface UseLoadGsiScriptOptions {
 	onScriptLoadError?: () => void;
 }
 
-export function useLoadGsiScript(options: UseLoadGsiScriptOptions = {}): Accessor<boolean> {
-	const [scriptLoadedSuccessfully, setScriptLoadedSuccessfully] = createSignal(false);
+export function createGsiScriptLoad(options: GsiScriptLoadOptions = {}): Accessor<boolean> {
+	const [scriptLoaded, setScriptLoaded] = createSignal(false);
 
 	createEffect(() => {
 		const script = document.createElement("script");
@@ -25,11 +25,11 @@ export function useLoadGsiScript(options: UseLoadGsiScriptOptions = {}): Accesso
 		script.defer = true;
 		script.nonce = options.nonce;
 		script.onload = () => {
-			setScriptLoadedSuccessfully(true);
+			setScriptLoaded(true);
 			options.onScriptLoadSuccess?.();
 		};
 		script.onerror = () => {
-			setScriptLoadedSuccessfully(false);
+			setScriptLoaded(false);
 			options.onScriptLoadError?.();
 		};
 
@@ -40,5 +40,5 @@ export function useLoadGsiScript(options: UseLoadGsiScriptOptions = {}): Accesso
 		};
 	});
 
-	return scriptLoadedSuccessfully;
+	return scriptLoaded;
 }
