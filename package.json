@@ -2,7 +2,7 @@
 	"name": "@gomdle/solid-gsi",
 	"description": "Google Sign-In for SolidJs",
 	"version": "0.1.0",
-	"keyeywords": [
+	"keywords": [
 		"google",
 		"signin",
 		"solidjs"
@@ -34,6 +34,7 @@
 		"@types/google.accounts": "^0.0.14"
 	},
 	"files": [
-		"dist"
+		"dist",
+		"!dist/source"
 	]
 }
