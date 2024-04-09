@@ -25,7 +25,7 @@ import { createGoogleOneTapSignin } from "@gomdle/solid-gsi";
 createGoogleOneTapSignin({
 	client_id: "your_google_oauth_client_id",
 	cancel_on_tap_outside: false,
-	hosted_domain: "autostock.co.kr",
+	hosted_domain: "your-host.com",
 	onSuccess: credential => console.log('*** success', credential),
 	onError: () => console.error('*** error')
 });
