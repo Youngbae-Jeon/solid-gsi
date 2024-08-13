@@ -10,7 +10,10 @@ type GsiButtonConfiguration = google.accounts.id.GsiButtonConfiguration;
 export type GoogleSigninProps = {
 	type?: "standard" | "icon";
 	useOneTap?: boolean;
-	containerProps?: JSX.DOMAttributes<HTMLDivElement> & { style?: JSX.CSSProperties };
+	containerProps?: JSX.DOMAttributes<HTMLDivElement> & {
+		 style?: JSX.CSSProperties,
+		 class?: string,
+	};
 	onPrompt?: (promptMomentNotification: PromptMomentNotification) => void;
 	onSuccess: (credentialResponse: CredentialResponse) => void;
 	onError?: () => void;
