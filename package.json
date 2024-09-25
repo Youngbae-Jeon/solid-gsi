@@ -1,7 +1,7 @@
 {
 	"name": "@gomdle/solid-gsi",
 	"description": "Google Sign-In for SolidJs",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"keywords": [
 		"google",
 		"signin",
