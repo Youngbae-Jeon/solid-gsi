@@ -19,7 +19,13 @@ export function createGsiScriptLoad(options: GsiScriptLoadOptions = {}): Accesso
 	const [scriptLoaded, setScriptLoaded] = createSignal(false);
 
 	createEffect(() => {
-		const script = document.createElement("script");
+		let script = document.querySelector("script[src='https://accounts.google.com/gsi/client']") as HTMLScriptElement | null;
+		if (script && window.google) {
+			setScriptLoaded(true);
+			return scriptLoaded;
+		}
+
+		script = document.createElement("script");
 		script.src = "https://accounts.google.com/gsi/client";
 		script.async = true;
 		script.defer = true;
