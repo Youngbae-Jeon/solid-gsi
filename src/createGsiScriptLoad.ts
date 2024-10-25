@@ -1,4 +1,4 @@
-import { Accessor, createEffect, createSignal } from "solid-js";
+import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
 
 export interface GsiScriptLoadOptions {
 	/**
@@ -22,7 +22,7 @@ export function createGsiScriptLoad(options: GsiScriptLoadOptions = {}): Accesso
 		let script = document.querySelector("script[src='https://accounts.google.com/gsi/client']") as HTMLScriptElement | null;
 		if (script && window.google) {
 			setScriptLoaded(true);
-			return scriptLoaded;
+			return;
 		}
 
 		script = document.createElement("script");
@@ -41,9 +41,7 @@ export function createGsiScriptLoad(options: GsiScriptLoadOptions = {}): Accesso
 
 		document.body.appendChild(script);
 
-		return () => {
-			document.body.removeChild(script);
-		};
+		onCleanup(() => document.body.removeChild(script));
 	});
 
 	return scriptLoaded;
