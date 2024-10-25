@@ -21,9 +21,7 @@ interface GoogleOneTapSigninOptions {
 export function createGoogleOneTapSignin(opts: GoogleOneTapSigninOptions): void {
 	const scriptLoaded = createGsiScriptLoad();
 
-	onCleanup(() => {
-		window?.google?.accounts?.id?.cancel();
-	});
+	onCleanup(cancelGoogleOneTapSignin);
 
 	createEffect(() => {
 		if (!scriptLoaded()) return;
@@ -44,4 +42,8 @@ export function createGoogleOneTapSignin(opts: GoogleOneTapSigninOptions): void 
 
 		window?.google?.accounts?.id?.prompt(onPrompt);
 	});
+}
+
+export function cancelGoogleOneTapSignin() {
+	window?.google?.accounts?.id?.cancel();
 }
